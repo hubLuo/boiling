@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-
+/*方法型组件，其特点为无状态*/
 function BoilingVerdict(props) {
     if (props.celsius >= 100) {
         return <p>The water would boil.</p>;
