@@ -4,12 +4,32 @@
 import React, { Component } from 'react';
 import TemperatureInput from './temperatrueInput';
 import BoilingVerdict from './boilingVerdict';
-
-const EventEmitter =require("events").EventEmitter;
+//EventEmitter是观察者模式的一种
+//const EventEmitter =require("events").EventEmitter;
+const EventEmitter=function(){
+    this._events={};
+};
+EventEmitter.prototype={
+    constructor:EventEmitter,
+    on:function(event,fn){
+        if(!this._events[event]){
+            this._events[event]=[];
+        }
+        this._events[event].push(fn);
+    },
+    emit:function(event,data){
+        if(!this._events[event]){
+            return false;
+        }
+        for(var i=0;i<this._events[event].length;i++){
+            this._events[event][i](data);
+        }
+    }
+};
 /*
 * 使calculator组件只是作为一个架构层，所有的功能实现都放在了实际的子组件中去是现实，
 * 这样每个组件的渲染，只需要控制自己的state，而不再依赖一个提升了的公共的状态，来控制渲染。
-* 从此，每个组件都可以独立的存在，可以按需组合。
+* 从此，每个组件都可以独立的存在，可以按需组合，低耦合高内聚。
 *
 * 根据以上的思路，公共状态的属性有2个temperature,和onTemperatureChange,
 * 实际控制渲染的状态值是temperature, 而属性onTemperatureChange是将父组件状态控制权，交给了子组件。
