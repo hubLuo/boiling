@@ -6,7 +6,6 @@ import TemperatureInput from './temperatrueInput';
 import BoilingVerdict from './boilingVerdict';
 
 const EventEmitter =require("events").EventEmitter;
-var emitter= new EventEmitter();
 /*
 * 1.根据事件源来确定事件总线，本例中只有一个input的onChange事件
 * 2.把父组件calculator中交互的代码移除，之前在状态提升中，是因为父组件状态state改变,必须要在父组件中进行。所以方法只能定义在父组件中。
@@ -20,23 +19,21 @@ class Calculator extends Component {
         super(props);
         this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
         this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-        this.state = {temperature: '', scale: 'c',name:"everyOne"};
+        this.state = {temperature: '', scale: 'c'};
+        this.emitter=new EventEmitter();
     }
 
     handleCelsiusChange(temperature) {
         this.setState({scale: 'c', temperature});
+        this.emitter.emit("temp change",temperature);
     }
 
     handleFahrenheitChange(temperature) {
         this.setState({scale: 'f', temperature});
+        this.emitter.emit("temp change",temperature);
     }
 
     componentDidMount(){
-        emitter.on("test event", ()=>{
-            this.setState({
-                name:"luoqi"
-            });
-        });
     };
 
     render() {
@@ -47,7 +44,6 @@ class Calculator extends Component {
 
         return (
             <div>
-                {this.state.name}
                 <TemperatureInput
                     scale="c"
                     temperature={celsius}
@@ -57,14 +53,12 @@ class Calculator extends Component {
                     temperature={fahrenheit}
                     onTemperatureChange={this.handleFahrenheitChange} />
                 <BoilingVerdict
-                    celsius={parseFloat(celsius)} />
+                    eventEmitter={this.emitter} />
             </div>
         );
     }
 }
-setTimeout(function(){
-    emitter.emit("test event");
-},3000);
+
 // 华氏温度转摄氏温度
 function toCelsius(fahrenheit) {
     return (fahrenheit - 32) * 5 / 9;
