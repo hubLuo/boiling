@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import App from './App';//用于Todo
+import ReactBoiling from "./boiling/reactBoiling/calculator";
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+//ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<ReactBoiling />, document.getElementById('root'));
 registerServiceWorker();
