@@ -18,47 +18,23 @@ const EventEmitter =require("events").EventEmitter;
 class Calculator extends Component {
     constructor(props) {
         super(props);
-        this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
-        this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
         this.state = {temperature: '', scale: 'c'};
         this.emitter=new EventEmitter();
     }
 
-    handleCelsiusChange(temperature) {
-        this.setState({scale: 'c', temperature});
-        //this.emitter.emit("temp change",temperature);
-    }
-
-    handleFahrenheitChange(temperature) {
-        this.setState({scale: 'f', temperature});
-        //this.emitter.emit("temp change",temperature);
-    }
-
-    componentDidMount(){
-        this.emitter.on("temp change",(obj)=>{
-            var scale =obj.scale;
-            obj.scale==="f"? this.handleFahrenheitChange(obj.temp): this.handleCelsiusChange(obj.temp)
-        });
-    };
     shouldComponentUpdate(){
         console.log("calculator更新");
         return true;
     }
     render() {
-        const scale = this.state.scale;
-        const temperature = this.state.temperature;
-        const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
-        const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
 
         return (
             <div>
                 <TemperatureInput
                     scale="c"
-                    temperature={celsius}
                     eventEmitter={this.emitter} />
                 <TemperatureInput
                     scale="f"
-                    temperature={fahrenheit}
                     eventEmitter={this.emitter} />
                 <BoilingVerdict
                     eventEmitter={this.emitter} />
@@ -66,26 +42,4 @@ class Calculator extends Component {
         );
     }
 }
-
-// 华氏温度转摄氏温度
-function toCelsius(fahrenheit) {
-    return (fahrenheit - 32) * 5 / 9;
-}
-
-// 摄氏温度转华氏温度
-function toFahrenheit(celsius) {
-    return (celsius * 9 / 5) + 32;
-}
-
-// 温度的数字化操作。
-function tryConvert(temperature, convert) {
-    const input = parseFloat(temperature);
-    if (Number.isNaN(input)) {
-        return '';
-    }
-    const output = convert(input);
-    const rounded = Math.round(output * 1000) / 1000;
-    return rounded.toString();
-}
-
 export default Calculator;
