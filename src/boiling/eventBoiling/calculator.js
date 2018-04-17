@@ -7,12 +7,13 @@ import BoilingVerdict from './boilingVerdict';
 
 const EventEmitter =require("events").EventEmitter;
 /*
-* 1.根据事件源来确定事件总线，本例中只有一个input的onChange事件
-* 2.把父组件calculator中交互的代码移除，之前在状态提升中，是因为父组件状态state改变,必须要在父组件中进行。所以方法只能定义在父组件中。
-* 3.广播，发射器，观察者模式有什么不同
-*   广播----指的是向所有人，持续放射消息，并且跨项目跨进程的，所以是个进程服务。
-*   发射器----是消息放射是点对点，消息的响应也是点对点的，并且需要对应触发（在一个事件总线范围内）
-*   观察者模式----消息的订阅是点对多个，消息的响应是轮询调用的（现实中如同微博）
+* 使calculator组件只是作为一个架构层，所有的功能实现都放在了实际的子组件中去是现实，
+* 这样每个组件的渲染，只需要控制自己的state，而不再依赖一个提升了的公共的状态，来控制渲染。
+* 从此，每个组件都可以独立的存在，可以按需组合。
+*
+* 根据以上的思路，公共状态的属性有2个temperature,和onTemperatureChange,
+* 实际控制渲染的状态值是temperature, 而属性onTemperatureChange是将父组件状态控制权，交给了子组件。
+* 而属性scale并不是决定组件是否渲染，只是父组件架构中的一个标识属性。
  *  */
 class Calculator extends Component {
     constructor(props) {
@@ -25,17 +26,24 @@ class Calculator extends Component {
 
     handleCelsiusChange(temperature) {
         this.setState({scale: 'c', temperature});
-        this.emitter.emit("temp change",temperature);
+        //this.emitter.emit("temp change",temperature);
     }
 
     handleFahrenheitChange(temperature) {
         this.setState({scale: 'f', temperature});
-        this.emitter.emit("temp change",temperature);
+        //this.emitter.emit("temp change",temperature);
     }
 
     componentDidMount(){
+        this.emitter.on("temp change",(obj)=>{
+            var scale =obj.scale;
+            obj.scale==="f"? this.handleFahrenheitChange(obj.temp): this.handleCelsiusChange(obj.temp)
+        });
     };
-
+    shouldComponentUpdate(){
+        console.log("calculator更新");
+        return true;
+    }
     render() {
         const scale = this.state.scale;
         const temperature = this.state.temperature;
@@ -47,11 +55,11 @@ class Calculator extends Component {
                 <TemperatureInput
                     scale="c"
                     temperature={celsius}
-                    onTemperatureChange={this.handleCelsiusChange} />
+                    eventEmitter={this.emitter} />
                 <TemperatureInput
                     scale="f"
                     temperature={fahrenheit}
-                    onTemperatureChange={this.handleFahrenheitChange} />
+                    eventEmitter={this.emitter} />
                 <BoilingVerdict
                     eventEmitter={this.emitter} />
             </div>

@@ -15,9 +15,9 @@ class BoilingVerdict extends React.Component{
     };
 
     componentDidMount(){
-        this.props.eventEmitter.on("temp change",(temp)=>{
+        this.props.eventEmitter.on("temp change",(obj)=>{
             var res=this.state.isboil;
-            temp>=100?res="水烧开了":res="水没有烧开";
+            obj.temp>=100?res="水烧开了":res="水没有烧开";
             this.setState({isboil:res});
         });
     };

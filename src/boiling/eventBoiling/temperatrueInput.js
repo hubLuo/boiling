@@ -15,9 +15,14 @@ class TemperatureInput extends Component {
     }
 
     handleChange(e) {
-        this.props.onTemperatureChange(e.target.value);
+        //this.props.onTemperatureChange(e.target.value);
+        console.log("正在输入的Input：",this.props.scale)
+        this.props.eventEmitter.emit("temp change",{scale:this.props.scale,temp:e.target.value});
     }
-
+    shouldComponentUpdate(){
+        console.log("temperature更新",this.props.scale);
+        return true;
+    }
     render() {
         const temperature = this.props.temperature;
         const scale = this.props.scale;
