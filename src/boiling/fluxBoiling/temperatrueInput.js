@@ -2,6 +2,7 @@
  * Created by Derry on 2018/3/28.
  */
 import React, { Component } from 'react';
+import Actions from "../../flux/actions";
 
 const scaleNames = {
     c: 'Celsius',
@@ -15,6 +16,7 @@ class TemperatureInput extends Component {
             temperature:""
         };
         this.handleChange = this.handleChange.bind(this);
+        this.actions=new Actions();
     }
 
     handleChange(e) {
@@ -24,7 +26,7 @@ class TemperatureInput extends Component {
         const val=e.target.value;
         const celsius = scale === 'f' ? tryConvert(val, toCelsius) : val;
         //this.props.store._add({scale,temp:celsius});
-        this.props.actions.add({scale,temp:celsius});
+        this.actions.add({scale,temp:celsius});
         //触发渲染自己
         this.setState({
             temperature:val

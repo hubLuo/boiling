@@ -1,6 +1,7 @@
 //const storeid=Symbol("store");
-const EventEmitter=require("events").EventEmitter;
-class Actions extends EventEmitter{
+//const EventEmitter=require("events").EventEmitter;
+import Dispatcher from "./dispatcher";
+class Actions{
 /*    constructor(store){
         //this[store]能确保是独一无二的
         this[storeid]=store;
@@ -11,7 +12,8 @@ class Actions extends EventEmitter{
             actionType:"add",
             data
         };
-        this.emit("call",actions);
+        //this.emit("call",actions);
+        Dispatcher.dispatch(actions);
     }
 }
 
