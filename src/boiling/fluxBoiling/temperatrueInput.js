@@ -33,6 +33,8 @@ class TemperatureInput extends Component {
         });
     }
     componentDidMount(){
+        //网络获取数据
+        this.actions.getAll();
         //这里监听这个事件，目的是为里触发其他输入框的渲染
         this.props.store.on("temp change",(obj)=>{
             var obj=obj["temp change"];
