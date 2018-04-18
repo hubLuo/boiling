@@ -23,7 +23,7 @@ class TemperatureInput extends Component {
         const scale = this.props.scale;
         const val=e.target.value;
         const celsius = scale === 'f' ? tryConvert(val, toCelsius) : val;
-        this.props.eventEmitter.emit("temp change",{scale,temp:celsius});
+        this.props.store._add({scale,temp:celsius});
         //触发渲染自己
         this.setState({
             temperature:val
@@ -31,7 +31,8 @@ class TemperatureInput extends Component {
     }
     componentDidMount(){
         //这里监听这个事件，目的是为里触发其他输入框的渲染
-        this.props.eventEmitter.on("temp change",(obj)=>{
+        this.props.store.on("temp change",(obj)=>{
+            var obj=obj["temp change"];
             if(obj.scale!==this.props.scale){
                 //触发渲染其他input
                 this.setState({
