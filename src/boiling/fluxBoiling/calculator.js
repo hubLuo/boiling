@@ -5,7 +5,9 @@ import React, { Component } from 'react';
 import TemperatureInput from './temperatrueInput';
 import BoilingVerdict from './boilingVerdict';
 import Store from "../../flux/store";
+import Actions from "../../flux/actions";
 var store =new Store();
+var actions=new Actions(store);
 class Calculator extends Component {
     constructor(props) {
         super(props);
@@ -22,10 +24,14 @@ class Calculator extends Component {
             <div>
                 <TemperatureInput
                     scale="c"
-                    store={store} />
+                    store={store}
+                    actions={actions}
+                />
                 <TemperatureInput
                     scale="f"
-                    store={store} />
+                    store={store}
+                    actions={actions}
+                />
                 <BoilingVerdict
                     store={store} />
             </div>

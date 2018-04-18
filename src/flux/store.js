@@ -7,8 +7,11 @@ class Store extends EventEmitter{
 
     _add(item){
         this._data["temp change"]=item;
-        this.emit("temp change",this._data);
+        //注意this.data是获取私有属性this._data的方法
+        this.emit("temp change",this.data);
     }
+    //get 方式强调了data方法只能读取不能改写。而set方法强调了可以改写
+    //get set是ES6中2个钩子
     get data() {
         return this._data;
     }
