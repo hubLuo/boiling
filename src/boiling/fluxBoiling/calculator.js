@@ -6,8 +6,8 @@ import TemperatureInput from './temperatrueInput';
 import BoilingVerdict from './boilingVerdict';
 import Store from "../../flux/store";
 import Actions from "../../flux/actions";
-var store =new Store();
-var actions=new Actions(store);
+var actions=new Actions();
+var store =new Store(actions);
 class Calculator extends Component {
     constructor(props) {
         super(props);
