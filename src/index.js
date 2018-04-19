@@ -5,6 +5,7 @@ import ReactBoiling from "./boiling/reactBoiling/calculator";
 import EventBoiling from "./boiling/eventBoiling/calculator";
 import FluxBoiling from "./boiling/fluxBoiling/calculator";
 import registerServiceWorker from './registerServiceWorker';
+import "./redux/index";
 
 //ReactDOM.render(<App />, document.getElementById('root'));
 //ReactDOM.render(<ReactBoiling />, document.getElementById('root'));
