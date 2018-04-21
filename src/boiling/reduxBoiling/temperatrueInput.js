@@ -24,7 +24,9 @@ class TemperatureInput extends Component {
         const val=e.target.value;
         const celsius = scale === 'f' ? tryConvert(val, toCelsius) : val;
         //this.props.eventEmitter.emit("temp change",{scale,temp:celsius});
-        this.props.store.dispatch(this.props.tempCHANGE({scale,temp:celsius}));
+        scale === 'f' ?
+            this.props.store.dispatch(this.props.tempCHANGE({scale,temp:celsius})):
+            this.props.store.dispatch(this.props.tempCHANGEAsync({scale,temp:celsius}));
         //触发渲染自己
         this.setState({
             temperature:val

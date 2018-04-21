@@ -4,10 +4,11 @@
 import React, { Component } from 'react';
 import TemperatureInput from './temperatrueInput';
 import BoilingVerdict from './boilingVerdict';
-import {createStore} from "redux";
-import {tempChange,tempCHANGE} from "../../redux/index.redux";
+import {createStore,applyMiddleware} from "redux";
+import {tempChange,tempCHANGE,tempCHANGEAsync} from "../../redux/index.redux";
+import thunk from "redux-thunk";
 
-const store=createStore(tempChange);
+const store=createStore(tempChange,applyMiddleware(thunk));
 
 class Calculator extends Component {
     constructor(props) {
@@ -26,11 +27,13 @@ class Calculator extends Component {
                     scale="c"
                     store={store}
                     tempCHANGE={tempCHANGE}
+                    tempCHANGEAsync={tempCHANGEAsync}
                 />
                 <TemperatureInput
                     scale="f"
                     store={store}
                     tempCHANGE={tempCHANGE}
+                    tempCHANGEAsync={tempCHANGEAsync}
                 />
                 <BoilingVerdict
                     store={store}

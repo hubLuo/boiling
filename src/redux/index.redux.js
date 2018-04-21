@@ -20,3 +20,12 @@ export function tempCHANGE(data){
         data
     }
 }
+
+export function tempCHANGEAsync(data){
+    return dispatch =>{
+        //模拟一个异步请求
+        setTimeout(function(){
+            dispatch(tempCHANGE(data));
+        },2000)
+    }
+}
